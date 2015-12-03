@@ -453,6 +453,7 @@ var local_script = {
 			$("#source_local a").text("本地源码:" + local_get_script);
 			$("#source_local a").attr("href","javascript:void(0)"); //动作化它
 			$("#source_local a").removeAttr("onclick"); //删除掉
+			$("#source_local a").unbind("click");
 			$("#source_local a").click(function(){
 				toolBarTabTools.doTheJob(local_get_script);
 				//console.log("船长,清理了代码!")
