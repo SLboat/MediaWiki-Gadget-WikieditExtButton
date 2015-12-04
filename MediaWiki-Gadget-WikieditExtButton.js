@@ -236,7 +236,7 @@ var auto_kat = function(kat) {
 	// 最后才渲染的选择框，这有点麻烦
 	//if ($("#mw-edittools-charinsert select").val() == 0) {
 	// 自动分类
-	var kat_html = $("#char_show_auto").html().replace(/\[\[分类:自动\]\]/g, "[[分类:" + kat + "]]"); //自动分类
+	var kat_html = $("#char_show_auto").html().replace(/\[\[分\类:自动\]\]/g, "[[分\类:" + kat + "]]"); //自动分类
 	$("#char_show_auto").html(kat_html); //写入分类-管它呢
 	$("#char_show_auto").show(); //显示出来
 	return true;
@@ -524,7 +524,7 @@ var audio_button = function() {
 			};
 			//如果不能自动分类的页面
 			if (get_small_title().length == 0) {
-				get_a_kat = "\n[[分类:想法]]\n";
+				get_a_kat = "\n[[分\类:想法]]\n";
 			};
 			insertTags("==音频想法==\n----\n" + mp3_file + "\n* ", "\n* \n\n" + get_a_kat, "");
 		});
