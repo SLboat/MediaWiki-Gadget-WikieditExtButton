@@ -683,7 +683,7 @@ var slboat_links_in_delmove = {
 	inject: function() {
 		//防止重复注入
 		if ($("#mainpage_linkin").length == 0) {
-			var $intoDiv = $("#deleteconfirm, #movepage").parent(); //放入的地方
+			var $intoDiv = $("#deleteconfirm, #movepage"); //放入的地方,另一个选择是它的.parent()
 			//注入主页面链接
 			$intoDiv.after('<h2 style="color: red;">主页面链入页面</h2><div id="mainpage_linkin">船长!我来了!立即开始!正在探索链入页面....</div>');
 			//注入子页面链接-同样前推
@@ -750,7 +750,7 @@ var slboat_links_in_delmove = {
 		api.get({
 			action: 'query',
 			list: 'prefixsearch',
-			pssearch: wgRelevantPageName
+			pssearch: mw.config.get("wgRelevantPageName")
 			//下一行不能注释,否则会格式化有误(jsFormat)
 		})
 			.done(function(data) { //[发生]获得了有效数据,[有趣]这里的链坠它是怎么解开的呢?毕竟都是object嘛
@@ -760,7 +760,7 @@ var slboat_links_in_delmove = {
 					for (title_obj in prefix_title_array) {
 						clildTitle = prefix_title_array[title_obj].title; //字标题!
 						//[过滤]对于只是前面相同的子页面我们需要过滤它,考虑到[ ]和[_]长度一致,故我们判定长度
-						if (clildTitle.length == wgRelevantPageName.length) {
+						if (clildTitle.length == mw.config.get("wgRelevantPageName").length) {
 							masterThis.check(clildTitle);
 						} else if (clildTitle.match("/")) { //[判定]纯粹的子页面
 							masterThis.check(clildTitle);
@@ -790,7 +790,7 @@ var slboat_links_in_delmove = {
 
 		//[想法],如果是个object的对象自然更好..但是先不理,最简单的搭建一个
 		//[下划线]由于可能自动出现这个东西,所以替换回来空格是好的
-		var isPageSelf = (title == wgRelevantPageName.replace(/_/g, " ")); //取得是否是页面自己
+		var isPageSelf = (title == mw.config.get("wgRelevantPageName").replace(/_/g, " ")); //取得是否是页面自己
 
 		api.get({
 			action: 'query',
