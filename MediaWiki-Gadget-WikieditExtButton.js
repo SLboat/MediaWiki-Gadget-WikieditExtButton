@@ -239,9 +239,53 @@ var auto_kat = function(kat) {
 	var kat_html = $("#char_show_auto").html().replace(/\[\[分\类:自动\]\]/g, "[[分\类:" + kat + "]]"); //自动分类
 	$("#char_show_auto").html(kat_html); //写入分类-管它呢
 	$("#char_show_auto").show(); //显示出来
+	insertKat4Empty(kat); //自动引入分类
 	return true;
 	//} //这里取消
 };
+
+//自动放入默认的空白页一个分类
+var insertKat4Empty = function(kat) {
+    var wpEditBox = $("#wpTextbox1")
+    var hadText = function() {
+        return (wpEditBox.val().length > 1) 
+    }
+ 	if (document.location.search.search("&section=new") > 0){
+ 		return; //存在段落
+ 	}
+    if (hadText()) {
+        return;
+        //不必要执行
+    }
+    var api = new mw.Api();
+    api.get({
+        srsearch: kat,
+        action: 'query',
+        list: 'search',
+        srwhat: 'title',
+        srnamespace: '14'
+    })
+    .done(function(data) {
+        if (hadText()) {
+            return
+        }
+        var result = data.query.search
+        if (result.length > 0) {
+            var st = result[0].title
+            if (st == "分类:" + kat) {
+                //输入文字
+                var brstr = "\n\n"
+                wpEditBox.focus()
+                document.execCommand('insertText', false, brstr + "[[分类:" + kat + "]]");
+                wpEditBox[0].selectionStart = 0
+                wpEditBox[0].selectionEnd = 0
+            }
+        }
+    })
+    .fail(function(error) { //链坠,哈哈!
+        console.log('船长: 自动分类-检验分类失败了: ', error);
+    });
+}
 
 //源码外的小工具
 //整理tab
@@ -837,5 +881,7 @@ var slboat_links_in_delmove = {
 
 /* 开始执行咯 */
 $(function() {
-	slboat_links_in_delmove.start();
+	mw.loader.using("mediawiki.api",function(){
+		slboat_links_in_delmove.start();
+	});
 });
