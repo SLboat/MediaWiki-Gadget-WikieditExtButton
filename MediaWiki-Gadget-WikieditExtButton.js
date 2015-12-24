@@ -579,7 +579,6 @@ var audio_button = function() {
 var patch_edittool = function() { //补丁编辑工具
 	var small_title = get_small_title();
 	//干活开始
-	auto_kat(small_title);
 	auto_source(small_title);
 	/* 自动源码粘贴 */
 	currTextIsInSource.pasteBoardTool.injectTool()
@@ -596,7 +595,16 @@ var focus_editor = function() {
 /* 开始注入小工具们，或许该等页面载入完？ */
 /* 当在编辑模式，有可用的组件，支持新的工具栏就开启 */
 //submit是干嘛的?
+//TODO:mw.Api可能依然还没有加载呢...
 if ($.inArray(mw.config.get('wgAction'), ['edit', 'submit']) !== -1) {
+
+	/* 开始执行咯 */
+	$(function() {
+		mw.loader.using("mediawiki.api",function(){
+			auto_kat(get_small_title());
+		});
+	});
+
 	mw.loader.using('user.options', function() {
 		if (mw.user.options.get('usebetatoolbar')) {
 			mw.loader.using('ext.wikiEditor.toolbar', function() { /* 自定义按钮-新的方式，仅仅V1.21支持的方式，需要一些trick */
